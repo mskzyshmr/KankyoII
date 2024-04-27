@@ -82,15 +82,20 @@ print(x)
 > from ライブラリ名 import 変数名or関数名  
 
 ### 7 数学定数や初等関数
-#### 7.1 数学定数: pi, e
-> \# ライブラリmathを使うことを宣言  
->  import math  
+mathモジュールを使う  
+> [!NOTE]  
+> 数値計算ではnumpyモジュールを使うことが多い
+> Numpyを参照
+
+#### 7.1 数学定数: pi, e  
+```
+>  import math  # モジュールmathを使うことを宣言
 >  print(math.pi)  
 >  print(math.e)  
+```
 
 #### 7.2 三角関数: sin, cos, tan
-- mathを使う
-> \# ライブラリmathを使うことを宣言  
+> \# モジュールmathを使うことを宣言  
 > import math  
 >  
 > \# degree→radian  
@@ -108,28 +113,8 @@ print(x)
 > \# tangent  
 > math.tan(引数)  
 
-- numpyを使う
-> \# ライブラリnumpyを使うことを宣言  
-> import numpy as np  
->  
-> \# degree→radian  
-> np.deg2rad(引数)  
->  
-> \# radian→degree  
-> np.rad2deg(引数)  
->  
-> \# sine  
-> np.sin(引数)  
->  
-> \# cosine  
-> np.cos(引数)  
->  
-> \# tangent  
-> np.tan(引数)  
-
 > [!NOTE]  
 > 三角関数の引数の単位はラジアン  
-> mathとnumpyでは引数の種類が異なる．  
 
 ## 第2回 反復処理と条件分岐
 ### 8 演算子
@@ -173,8 +158,8 @@ type(b)
 b
 ```
 
-[!IMPORTANT]
-リストは要素を変更できるが，タプルはできない．
+> [!IMPORTANT]  
+> リストは要素を変更できるが，タプルはできない．
 ```
 a[1] = 8  # o.k.
 b[1] = 8  # error
@@ -202,35 +187,28 @@ b
 tuple(c)
 ```
 
-以下の3つは全て同じ結果：
+#### 9.4 代入
+- 参照渡し: 配列（箱）の場所（アドレス）を代入  
+例）
 ```
-for i in a:
-    print('Hello')
-```
-```
-for j in b:
-    print('Hello')
-```
-```
-for k in range(5):
-    print('Hello')
+x = [0, 0, 0]
+print(x)
+y = x
+print(x, y)
+y[1] = 1
+print(x, y)
 ```
 
-リストを使った多次元配列
+- 値を代入: 配列（箱）の中身（値）を代入  
+例）
 ```
-A = [[0,1,2],[3,4,5]]  # 2行3列の行列を定義
-A[0][2]                   # 1行3列目の要素を指定
-````
-
-タプルを使った多次元配列
+x = [0, 0, 0]
+y = [0, 0, 0]
+y[:] = x[:]
+print(x, y)
+y[1] = 1
+print(x, y)
 ```
-B = ([0,1,2],[3,4,5])  # 2行3列の行列を定義
-B[0][2]                   # 1行3列目の要素を指定
-```
-
-#### 自習: 次の2つについて調べてみよう
-- np.linspace
-- np.arange
 
 ### 10 繰り返し: for, while
 #### 10.1 for
@@ -244,6 +222,23 @@ for 変数 in range(N):
 ```
 for count in range(3):
     print(count)
+```
+
+- 以下の3つは全て同じ結果
+```
+a = [0,1,2,3,4]
+for i in a:
+    print('Hello')
+```
+```
+b = (0,1,2,3,4)
+for j in b:
+    print('Hello')
+```
+```
+c = range(5)
+for k in c:
+    print('Hello')
 ```
 
 #### 10.2 while
@@ -299,40 +294,25 @@ else:
 
 ## 第3回 配列と関数
 ### 12 配列
-- 1次元配列（要素数N）  
-    a[0], a[1], …, a[N-1]
-- 2次元配列  
-    a[0,0], a[0,1], a[0,2],…  
-    a[1,0], a[1,1], a[1,2],…  
-    a[2,0], a[2,1], a[3,2],…
-- 3次元配列  
-    a[0,0,0], a[0,0,1], a[0,0,2],…
+> [!NOTE]  
+> 数値計算では，リストやタプルよりも，numpyモジュールの配列（ndarray）を使うことが多い．
 
-#### 12.1 Numpyにおける配列の作成
-例）
-- 1行3列の整数型の配列  
-作成：x = np.array([1,2,3])  
-要素の表示：print(x)  
-特定要素の抽出：print(x[1])  
-型の表示：print(x.dtype)
+#### 12.1 リストやタプルを使った多次元配列
+- リストを使った多次元配列
+```
+A = [[0,1,2],[3,4,5]]  # 2行3列の行列を定義
+A[0][2]                # 1行3列目の要素を指定
+````
 
-- 1行3列の不動小数点型の配列  
-作成：x = np.array([1.0,2.0,3.0])  
-要素の表示：print(x)  
-特定要素の抽出：print(x[1])  
-型の表示：print(x.dtype)
-	
-- 2行3列の整数型の配列  
-作成：y = np.array([[1,2,3],[4,5,6]])  
-要素の表示：print(y)
+- タプルを使った多次元配列
+```
+B = ([0,1,2],[3,4,5])  # 2行3列の行列を定義
+B[0][2]                # 1行3列目の要素を指定
+```
 
-#### 12.2 配列の型
-- int32：32ビット整数型
-- int64：64ビット整数型
-- float32: 32ビット浮動小数点数型
-- float64：64ビット浮動小数点数型
-> [!NOTE]
-> これ以外にもあり
+#### 12.2 Numpyにおける配列の作成
+
+Numpyを参照
 
 ### 13 関数
 Pythonにはあらかじめ準備されている組み込み関数(type, str, int, float, print, input, range, ...)とユーザーが自由に定義できるユーザー定義関数がある．
@@ -343,71 +323,44 @@ def 関数名(引数1, 引数2, …):
     処理
 ```
 
-例）
+例）Hello World!を表示する関数
 ```
+# 関数
 def hello():
     print(‘Hello World!’)
+
+# メイン
 hello()
 ```
 
-#### 13.1 戻り値ありの関数
+#### 13.2 戻り値ありの関数
 ```
-def 関数名(引数1, 引数2, …:
+def 関数名(引数1, 引数2, …):
     処理
     return 戻り値
 ```
+> [!NOTE]  
+> 戻り値は1つのみ
 
-例1）
+例1）足し算をする関数
 ```
+# 関数
 def plus(x, y):
     return x+y
 
+# メイン
 z = plus(5,3)
 print(z)
 ```
 
-例2）
+例2）タプルとしてまとめることによって戻り値を1つに統合
 ```
+# 関数
 def plus_minus(x, y):
     return x+y, x-y
 
+＃メイン
 z1, z2 = plus_minus(5,3)
 print(z1)
 print(z2)
-```
-
-### 14 代入（アドバンスト）
-#### 14.1 参照渡し: 配列（箱）の場所（アドレス）を代入
-例）
-```
-import numpy as np
-x = np.zeros(3)
-print(x)
-y = x
-print(x, y)
-y[1] = 1
-print(x, y)
-```
-
-#### 14.2 値を代入: 配列（箱）の中身（値）を代入
-例1）
-```
-import numpy as np
-x = np.zeros(3)
-print(x)
-y = np.copy(x)
-print(x, y)
-y[1] = 1
-print(x, y)
-```
-
-例2）
-```
-import numpy as np
-x = np.zeros(3)
-y = np.zeros(3)
-y[:] = x[:]
-print(x, y)
-y[1] = 1
-print(x, y)
 ```
